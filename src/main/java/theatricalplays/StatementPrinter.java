@@ -18,16 +18,13 @@ public class StatementPrinter {
       Play play = plays.get(perf.playID);
       float thisAmount = calculAmount(perf, play);
 
-
-      // add volume credits
-      volumeCredits += Math.max(perf.audience - 30, 0);
-      // add extra credit for every ten comedy attendees
-      if (Play.COMEDY.equals(play.type)) volumeCredits += Math.floor(perf.audience / 5);
+      volumeCredits += calculCredits(perf, play.type);
 
       // print line for this order
       result = result.append("  " + play.name + ": " + frmt.format(thisAmount) + " (" + perf.audience + " seats)\n");
       totalAmount += thisAmount;
     }
+
     result = result.append("Amount owed is " + frmt.format(totalAmount) + "\n");
     result = result.append("You earned " + volumeCredits + " credits\n");
     return result;
@@ -56,6 +53,17 @@ public class StatementPrinter {
       }
 
     return thisAmount;
+  }
+
+  //fonction qui calcul le volume de crédits
+  private int calculCredits(Performance perf, String type){
+    int result = 0;
+    result += Math.max(perf.audience - 30, 0);
+
+    // add extra credit for every ten comedy attendees
+    if (Play.COMEDY.equals(type)) 
+      result += Math.floor(perf.audience / 5);
+    return result;
   }
 
 }
