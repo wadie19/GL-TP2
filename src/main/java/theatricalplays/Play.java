@@ -1,6 +1,9 @@
 package theatricalplays;
 
 public class Play {
+  //variable statique
+  public static final String TRAGEDY = "tragedy";
+  public static final String COMEDY = "comedy";
 
   public String name;
   public String type;
@@ -9,4 +12,6 @@ public class Play {
     this.name = name;
     this.type = type;
   }
+
 }
+
