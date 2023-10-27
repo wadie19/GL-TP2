@@ -16,7 +16,26 @@ public class StatementPrinter {
 
     for (Performance perf : invoice.performances) {
       Play play = plays.get(perf.playID);
-      float thisAmount = 0;
+      float thisAmount = calculAmount(perf, play);
+
+
+      // add volume credits
+      volumeCredits += Math.max(perf.audience - 30, 0);
+      // add extra credit for every ten comedy attendees
+      if (Play.COMEDY.equals(play.type)) volumeCredits += Math.floor(perf.audience / 5);
+
+      // print line for this order
+      result = result.append("  " + play.name + ": " + frmt.format(thisAmount) + " (" + perf.audience + " seats)\n");
+      totalAmount += thisAmount;
+    }
+    result = result.append("Amount owed is " + frmt.format(totalAmount) + "\n");
+    result = result.append("You earned " + volumeCredits + " credits\n");
+    return result;
+  }
+
+  //fonction qui calcul total amount dépend de type
+  public float calculAmount(Performance perf, Play play){
+    float thisAmount = 0;
 
       switch (play.type) {
         case Play.TRAGEDY:
@@ -36,18 +55,7 @@ public class StatementPrinter {
           throw new Error("unknown type: ${play.type}");
       }
 
-      // add volume credits
-      volumeCredits += Math.max(perf.audience - 30, 0);
-      // add extra credit for every ten comedy attendees
-      if ("comedy".equals(play.type)) volumeCredits += Math.floor(perf.audience / 5);
-
-      // print line for this order
-      result = result.append("  " + play.name + ": " + frmt.format(thisAmount) + " (" + perf.audience + " seats)\n");
-      totalAmount += thisAmount;
-    }
-    result = result.append("Amount owed is " + frmt.format(totalAmount) + "\n");
-    result = result.append("You earned " + volumeCredits + " credits\n");
-    return result;
+    return thisAmount;
   }
 
 }
