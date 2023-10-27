@@ -12,20 +12,18 @@ public class StatementPrinter {
     int volumeCredits = 0;
 
     StringBuffer result = new StringBuffer("Statement for " + invoice.customer + "\n");
-    NumberFormat frmt = NumberFormat.getCurrencyInstance(Locale.US);
 
     for (Performance perf : invoice.performances) {
       Play play = plays.get(perf.playID);
       float thisAmount = calculAmount(perf, play);
 
       volumeCredits += calculCredits(perf, play.type);
-
       // print line for this order
-      result = result.append("  " + play.name + ": " + frmt.format(thisAmount) + " (" + perf.audience + " seats)\n");
+      result = result.append("  " + play.name + ": " + formatCurrency(thisAmount) + " (" + perf.audience + " seats)\n");
       totalAmount += thisAmount;
     }
 
-    result = result.append("Amount owed is " + frmt.format(totalAmount) + "\n");
+    result = result.append("Amount owed is " + formatCurrency(totalAmount) + "\n");
     result = result.append("You earned " + volumeCredits + " credits\n");
     return result;
   }
@@ -64,6 +62,11 @@ public class StatementPrinter {
     if (Play.COMEDY.equals(type)) 
       result += Math.floor(perf.audience / 5);
     return result;
+  }
+
+  //fonction qui precise le format de currency
+  private String formatCurrency(float totalAmount) {
+    return NumberFormat.getCurrencyInstance(Locale.US).format(totalAmount);
   }
 
 }
