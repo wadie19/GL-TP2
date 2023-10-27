@@ -56,13 +56,15 @@ public class StatementPrinterTests {
     StatementPrinter statementPrinter = new StatementPrinter();
     var result = statementPrinter.print(invoice, plays);
 
-    String expectedStatement = "Statement for Customer\n" +
-            "  Play: $400.00 (30 seats)\n" +
-            "Amount owed is $400.00\n" +
-            "You earned 0 credits\n";
+    StringBuffer expectedStatement = new StringBuffer();
+    expectedStatement.append("Statement for Customer\n");
+    expectedStatement.append("  Play: $400.00 (30 seats)\n");
+    expectedStatement.append("Amount owed is $400.00\n");
+    expectedStatement.append("You earned 0 credits\n");
 
-    assertEquals(expectedStatement, result);
-    }
+    assertEquals(expectedStatement.toString(), result.toString());
+}
+
 
     @Test
     void testAudience20ForComedy() {
@@ -74,11 +76,12 @@ public class StatementPrinterTests {
     StatementPrinter statementPrinter = new StatementPrinter();
     var result = statementPrinter.print(invoice, plays);
 
-    String expectedStatement = "Statement for Customer\n" +
-            "  Play: $360.00 (20 seats)\n" +
-            "Amount owed is $360.00\n" +
-            "You earned 4 credits\n"; 
+    StringBuffer expectedStatement = new StringBuffer();
+    expectedStatement.append("Statement for Customer\n");
+    expectedStatement.append("  Play: $360.00 (20 seats)\n");
+    expectedStatement.append("Amount owed is $360.00\n");
+    expectedStatement.append("You earned 4 credits\n");
 
-    assertEquals(expectedStatement, result);
+    assertEquals(expectedStatement.toString(), result.toString());
     }
 }
