@@ -1,17 +1,21 @@
 package theatricalplays;
 
-public class Play {
+public abstract class Play {
   //variable statique
   public static final String TRAGEDY = "tragedy";
   public static final String COMEDY = "comedy";
 
   public String name;
-  public String type;
 
-  public Play(String name, String type) {
+  //constructeur sans paramétre
+  public Play(){}
+  //constructeur avec paramétre 
+  public Play(String name) {
     this.name = name;
-    this.type = type;
   }
+
+  public abstract float getPrice(int audience);
+  public abstract int getCredits(int audience);
 
 }
 
