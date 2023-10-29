@@ -32,6 +32,24 @@ public class StatementPrinterTests {
     } 
 
     @Test
+    void exampleStatementCustomer() {
+        Map<String, Play> plays = Map.of(
+                "hamlet",  new PlayTragedy("Hamlet"),
+                "as-like", new PlayComedy("As You Like It"),
+                "othello", new PlayTragedy("Othello"));
+
+        Invoice invoice = new Invoice(new Customer("BigCo", "1", 150), List.of(
+                new Performance("hamlet", 55),
+                new Performance("as-like", 35),
+                new Performance("othello", 40)));
+        
+        StatementPrinter statementPrinter = new StatementPrinter();
+        var result = statementPrinter.print(invoice, plays);
+
+        verify(result);
+    }
+
+    @Test
     void exampleStatementHTML() {
         Map<String, Play> plays = Map.of(
                 "hamlet",  new PlayTragedy("Hamlet"),

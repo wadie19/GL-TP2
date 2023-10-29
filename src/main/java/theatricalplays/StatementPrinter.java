@@ -13,9 +13,19 @@ public class StatementPrinter {
     StringBuffer result = new StringBuffer("Statement for " + invoice.customer.name + "\n");
 
     for (Performance perf : invoice.performances) {
-
       // print line for this order
       result = result.append("  " + performancePlay(perf, plays).name + ": " + frmt.format(performancePlay(perf, plays).getPrice(perf.audience)) + " (" + perf.audience + " seats)\n");
+    }
+
+    if(invoice.customer.soldeFidelite >= 150){
+      float totalAmount = calculAmount(invoice, plays) - 15;
+      int volumeCredits = invoice.customer.soldeFidelite - 150;
+
+      result.append("Congrats!\nYou have been deducted of 150 credits and 15$\n");
+      result.append("Amount owed is " + frmt.format(totalAmount) + "\n");
+      result.append("You earned " + volumeCredits + " credits\n");
+
+      return result;
     }
 
     result = result.append("Amount owed is " + frmt.format(calculAmount(invoice, plays)) + "\n");
@@ -43,7 +53,7 @@ public class StatementPrinter {
         +"\t\t\t\t <td>" + perf.audience + "</td> \n"
         +"\t\t\t\t <td>" + frmt.format(performancePlay(perf, plays).getPrice(perf.audience)) + "</td> \n"
         +"\t\t\t</tr> \n");
-    }
+    }   
 
     result.append("\t\t\t<tr> \n"
     +"\t\t\t\t <td colspan=\"2\" style=\"text-align: right;\"><b>Total owed:<b></td> \n"
