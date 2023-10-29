@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.approvaltests.Approvals.verify;
+import static org.approvaltests.Approvals.verifyHtml;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StatementPrinterTests {
@@ -28,6 +29,24 @@ public class StatementPrinterTests {
         var result = statementPrinter.print(invoice, plays);
 
         verify(result);
+    }
+
+    @Test
+    void exampleStatementHTML() {
+        Map<String, Play> plays = Map.of(
+                "hamlet",  new PlayTragedy("Hamlet"),
+                "as-like", new PlayComedy("As You Like It"),
+                "othello", new PlayTragedy("Othello"));
+
+        Invoice invoice = new Invoice("BigCo", List.of(
+                new Performance("hamlet", 55),
+                new Performance("as-like", 35),
+                new Performance("othello", 40)));
+
+        StatementPrinter statementPrinter = new StatementPrinter();
+        var result = statementPrinter.toHTML(invoice, plays);
+
+        verifyHtml(result);
     }
 
     /*@Test
