@@ -1,9 +1,6 @@
 package theatricalplays;
 
 public abstract class Play {
-  //variable statique
-  public static final String TRAGEDY = "tragedy";
-  public static final String COMEDY = "comedy";
 
   public String name;
 

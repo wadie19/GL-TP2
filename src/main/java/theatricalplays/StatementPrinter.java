@@ -8,7 +8,7 @@ public class StatementPrinter {
 
   public static final NumberFormat frmt = NumberFormat.getCurrencyInstance(Locale.US);
 
-  public StringBuffer print(Invoice invoice, Map<String, Play> plays) {
+  public StringBuffer toText(Invoice invoice, Map<String, Play> plays) {
 
     StringBuffer result = new StringBuffer("Statement for " + invoice.customer.name + "\n");
 

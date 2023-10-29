@@ -26,7 +26,7 @@ public class StatementPrinterTests {
                 new Performance("othello", 40)));
 
         StatementPrinter statementPrinter = new StatementPrinter();
-        var result = statementPrinter.print(invoice, plays);
+        var result = statementPrinter.toText(invoice, plays);
 
         verify(result);
     } 
@@ -44,7 +44,7 @@ public class StatementPrinterTests {
                 new Performance("othello", 40)));
         
         StatementPrinter statementPrinter = new StatementPrinter();
-        var result = statementPrinter.print(invoice, plays);
+        var result = statementPrinter.toText(invoice, plays);
 
         verify(result);
     }
@@ -94,7 +94,7 @@ public class StatementPrinterTests {
     Invoice invoice = new Invoice(new Customer("Customer", "1", 0), List.of(new Performance("playID", 30)));
 
     StatementPrinter statementPrinter = new StatementPrinter();
-    var result = statementPrinter.print(invoice, plays);
+    var result = statementPrinter.toText(invoice, plays);
 
     StringBuffer expectedStatement = new StringBuffer();
     expectedStatement.append("Statement for Customer\n");
@@ -113,7 +113,7 @@ public class StatementPrinterTests {
     Invoice invoice = new Invoice(new Customer("Customer", "1", 0), List.of(new Performance("playID", 20)));
 
     StatementPrinter statementPrinter = new StatementPrinter();
-    var result = statementPrinter.print(invoice, plays);
+    var result = statementPrinter.toText(invoice, plays);
 
     StringBuffer expectedStatement = new StringBuffer();
     expectedStatement.append("Statement for Customer\n");
