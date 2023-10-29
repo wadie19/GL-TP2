@@ -55,6 +55,28 @@ public class StatementPrinter {
         +"\t\t\t</tr> \n");
     }   
 
+    if(invoice.customer.soldeFidelite >= 150){
+      float totalAmount = calculAmount(invoice, plays) - 15;
+      int volumeCredits = invoice.customer.soldeFidelite - 150;
+
+      result.append("\t\t\t\t<tr> \n"
+      + "\t\t\t\t\t <td colspan=\"2\" style=\"text-align: right;\"><b>Total owed:<b></td> \n"
+      + "\t\t\t\t\t <td>" + frmt.format(totalAmount)+ "</td> \n"
+      + "\t\t\t\t</tr> \n");
+      result.append("\t\t\t\t<tr> \n"
+      + "\t\t\t\t\t <td colspan=\"2\" style=\"text-align: right;\"><b>Fidelity points earned:<b></td> \n"
+      + "\t\t\t\t\t <td>" + volumeCredits + "</td> \n"
+      + "\t\t\t\t</tr> \n");
+
+      result.append("\t\t\t</table> \n"
+      + "\t\t\t<p><i>Congrats! You have been deducted of 150 credits and 15$<i></p> \n"
+      + "\t\t\t<p><i>Payment is required under 30 days. We can break your knees if you don't do so.<i></p> \n"
+      + "\t\t</body> \n"
+      + "\t</html> \n");
+
+      return result.toString();
+    } 
+
     result.append("\t\t\t<tr> \n"
     +"\t\t\t\t <td colspan=\"2\" style=\"text-align: right;\"><b>Total owed:<b></td> \n"
     +"\t\t\t\t <td>" + frmt.format(calculAmount(invoice, plays))+ "</td> \n"
@@ -66,7 +88,7 @@ public class StatementPrinter {
     + "\t\t\t</tr> \n");
 
     result.append("\t\t</table> \n"
-    + "\t\t<p style=\"font-style: italic;\">Payment is required under 30 days. We can break your knees if you don't do so.</p> \n"
+    + "\t\t<p><i>Payment is required under 30 days. We can break your knees if you don't do so.<i></p> \n"
     + "\t</body> \n"
     + "</html> \n");
 

@@ -67,21 +67,24 @@ public class StatementPrinterTests {
         verifyHtml(result);
     }
 
-    /*@Test
-    void statementWithNewPlayTypes() {
+    @Test
+    void exampleStatementHTMLCustomer() {
         Map<String, Play> plays = Map.of(
-                "henry-v",  new Play("Henry V", "history"),
-                "as-like", new Play("As You Like It", "pastoral"));
+                "hamlet",  new PlayTragedy("Hamlet"),
+                "as-like", new PlayComedy("As You Like It"),
+                "othello", new PlayTragedy("Othello"));
 
-        Invoice invoice = new Invoice("BigCo", List.of(
-                new Performance("henry-v", 53),
-                new Performance("as-like", 55)));
+        Invoice invoice = new Invoice(new Customer("BigCo", "1", 150), List.of(
+                new Performance("hamlet", 55),
+                new Performance("as-like", 35),
+                new Performance("othello", 40)));
 
         StatementPrinter statementPrinter = new StatementPrinter();
-        Assertions.assertThrows(Error.class, () -> {
-        statementPrinter.print(invoice, plays);
-        });
-    }*/
+        var result = statementPrinter.toHTML(invoice, plays);
+
+        verifyHtml(result);
+    }
+
 
     @Test
     void testAudience30ForTragedy() {
@@ -100,8 +103,7 @@ public class StatementPrinterTests {
     expectedStatement.append("You earned 0 credits\n");
 
     assertEquals(expectedStatement.toString(), result.toString());
-}
-
+    }
 
     @Test
     void testAudience20ForComedy() {
@@ -121,4 +123,20 @@ public class StatementPrinterTests {
 
     assertEquals(expectedStatement.toString(), result.toString());
     }
+
+    /*@Test
+    void statementWithNewPlayTypes() {
+        Map<String, Play> plays = Map.of(
+                "henry-v",  new Play("Henry V", "history"),
+                "as-like", new Play("As You Like It", "pastoral"));
+
+        Invoice invoice = new Invoice("BigCo", List.of(
+                new Performance("henry-v", 53),
+                new Performance("as-like", 55)));
+
+        StatementPrinter statementPrinter = new StatementPrinter();
+        Assertions.assertThrows(Error.class, () -> {
+        statementPrinter.print(invoice, plays);
+        });
+    }*/
 }
