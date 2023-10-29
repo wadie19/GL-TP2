@@ -3,7 +3,7 @@ package theatricalplays;
 public class PlayTragedy extends Play{
 
     public PlayTragedy(String name) {
-        this.name = name;
+        super(name);
     }
 
     @Override

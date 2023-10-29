@@ -20,7 +20,7 @@ public class StatementPrinterTests {
                 "as-like", new PlayComedy("As You Like It"),
                 "othello", new PlayTragedy("Othello"));
 
-        Invoice invoice = new Invoice("BigCo", List.of(
+        Invoice invoice = new Invoice(new Customer("BigCo", "1", 103), List.of(
                 new Performance("hamlet", 55),
                 new Performance("as-like", 35),
                 new Performance("othello", 40)));
@@ -29,7 +29,7 @@ public class StatementPrinterTests {
         var result = statementPrinter.print(invoice, plays);
 
         verify(result);
-    }
+    } 
 
     @Test
     void exampleStatementHTML() {
@@ -38,7 +38,7 @@ public class StatementPrinterTests {
                 "as-like", new PlayComedy("As You Like It"),
                 "othello", new PlayTragedy("Othello"));
 
-        Invoice invoice = new Invoice("BigCo", List.of(
+        Invoice invoice = new Invoice(new Customer("BigCo", "2", 0), List.of(
                 new Performance("hamlet", 55),
                 new Performance("as-like", 35),
                 new Performance("othello", 40)));
@@ -70,7 +70,7 @@ public class StatementPrinterTests {
     HashMap<String, Play> plays = new HashMap<>();
     plays.put("playID", new PlayTragedy("Play"));
 
-    Invoice invoice = new Invoice("Customer", List.of(new Performance("playID", 30)));
+    Invoice invoice = new Invoice(new Customer("Customer", "1", 0), List.of(new Performance("playID", 30)));
 
     StatementPrinter statementPrinter = new StatementPrinter();
     var result = statementPrinter.print(invoice, plays);
@@ -90,7 +90,7 @@ public class StatementPrinterTests {
     HashMap<String, Play> plays = new HashMap<>();
     plays.put("playID", new PlayComedy("Play"));
 
-    Invoice invoice = new Invoice("Customer", List.of(new Performance("playID", 20)));
+    Invoice invoice = new Invoice(new Customer("Customer", "1", 0), List.of(new Performance("playID", 20)));
 
     StatementPrinter statementPrinter = new StatementPrinter();
     var result = statementPrinter.print(invoice, plays);

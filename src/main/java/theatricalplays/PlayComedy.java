@@ -3,8 +3,8 @@ package theatricalplays;
 public class PlayComedy extends Play{
 
     public PlayComedy(String name) {
-        this.name = name;
-      }
+        super(name);
+    }
 
     @Override
     public float getPrice(int audience) {
