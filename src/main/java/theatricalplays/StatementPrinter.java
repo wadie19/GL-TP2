@@ -6,30 +6,37 @@ import java.util.Map;
 
 public class StatementPrinter {
 
-  public static final NumberFormat frmt = NumberFormat.getCurrencyInstance(Locale.US);
-
+  private static final NumberFormat frmt = NumberFormat.getCurrencyInstance(Locale.US);
+  private static final int MIN_FIDELITY_POINTS = 150;
+  private static final float DEDUCTION_AMOUNT = 15;
+  
   public StringBuffer toText(Invoice invoice, Map<String, Play> plays) {
 
     StringBuffer result = new StringBuffer("Statement for " + invoice.customer.name + "\n");
+    
+    float totalAmount = calculAmount(invoice, plays);
+    int volumeCredits = calculCredits(invoice, plays);
 
     for (Performance perf : invoice.performances) {
+      Play play = performancePlay(perf, plays);
+      float price = play.getPrice(perf.audience);
       // print line for this order
-      result = result.append("  " + performancePlay(perf, plays).name + ": " + frmt.format(performancePlay(perf, plays).getPrice(perf.audience)) + " (" + perf.audience + " seats)\n");
+      result = result.append("  " + play.name + ": " + frmt.format(price) + " (" + perf.audience + " seats)\n");
     }
 
-    if(invoice.customer.soldeFidelite >= 150){
-      float totalAmount = calculAmount(invoice, plays) - 15;
-      int volumeCredits = invoice.customer.soldeFidelite - 150;
+    if(invoice.customer.soldeFidelite >= MIN_FIDELITY_POINTS){
+      totalAmount -= DEDUCTION_AMOUNT;
+      volumeCredits = invoice.customer.soldeFidelite - 150;
 
-      result.append("Congrats!\nYou have been deducted of 150 credits and 15$\n");
+      result.append("Congrats!\nYou have been deducted of " + MIN_FIDELITY_POINTS + " credits and " + frmt.format(DEDUCTION_AMOUNT)+"\n");
       result.append("Amount owed is " + frmt.format(totalAmount) + "\n");
       result.append("You earned " + volumeCredits + " credits\n");
 
       return result;
     }
 
-    result = result.append("Amount owed is " + frmt.format(calculAmount(invoice, plays)) + "\n");
-    result = result.append("You earned " + calculCredits(invoice, plays) + " credits\n");
+    result = result.append("Amount owed is " + frmt.format(totalAmount) + "\n");
+    result = result.append("You earned " + volumeCredits + " credits\n");
     
     return result;
   }
@@ -47,17 +54,23 @@ public class StatementPrinter {
     + "\t\t\t<tr> \n"+"\t\t\t\t <th>Piece</th> \n"+"\t\t\t\t <th>Seats sold</th> \n"
     + "\t\t\t\t <th>Price</th> \n"+"\t\t\t</tr> \n");
 
+    float totalAmount = calculAmount(invoice, plays);
+    int volumeCredits = calculCredits(invoice, plays);
+
     for (Performance perf : invoice.performances) {
+      Play play = performancePlay(perf, plays);
+      float price = play.getPrice(perf.audience);
+
       result.append("\t\t\t<tr> \n"
-        +"\t\t\t\t <td>" + performancePlay(perf, plays).name + "</td> \n"
+        +"\t\t\t\t <td>" + play.name + "</td> \n"
         +"\t\t\t\t <td>" + perf.audience + "</td> \n"
-        +"\t\t\t\t <td>" + frmt.format(performancePlay(perf, plays).getPrice(perf.audience)) + "</td> \n"
+        +"\t\t\t\t <td>" + frmt.format(price) + "</td> \n"
         +"\t\t\t</tr> \n");
     }   
 
-    if(invoice.customer.soldeFidelite >= 150){
-      float totalAmount = calculAmount(invoice, plays) - 15;
-      int volumeCredits = invoice.customer.soldeFidelite - 150;
+    if(invoice.customer.soldeFidelite >= MIN_FIDELITY_POINTS){
+      totalAmount -= DEDUCTION_AMOUNT;
+      volumeCredits = invoice.customer.soldeFidelite - 150;
 
       result.append("\t\t\t\t<tr> \n"
       + "\t\t\t\t\t <td colspan=\"2\" style=\"text-align: right;\"><b>Total owed:<b></td> \n"
@@ -69,7 +82,7 @@ public class StatementPrinter {
       + "\t\t\t\t</tr> \n");
 
       result.append("\t\t\t</table> \n"
-      + "\t\t\t<p><i>Congrats! You have been deducted of 150 credits and 15$<i></p> \n"
+      + "\t\t\t<p><i>Congrats! You have been deducted of 150 credits and " + frmt.format(DEDUCTION_AMOUNT) + "<i></p> \n"
       + "\t\t\t<p><i>Payment is required under 30 days. We can break your knees if you don't do so.<i></p> \n"
       + "\t\t</body> \n"
       + "\t</html> \n");
@@ -79,12 +92,12 @@ public class StatementPrinter {
 
     result.append("\t\t\t<tr> \n"
     +"\t\t\t\t <td colspan=\"2\" style=\"text-align: right;\"><b>Total owed:<b></td> \n"
-    +"\t\t\t\t <td>" + frmt.format(calculAmount(invoice, plays))+ "</td> \n"
+    +"\t\t\t\t <td>" + frmt.format(totalAmount)+ "</td> \n"
     +"\t\t\t\t</tr> \n");
 
     result.append("\t\t\t<tr> \n"
     + "\t\t\t\t <td colspan=\"2\" style=\"text-align: right;\"><b>Fidelity points earned:<b></td> \n"
-    + "\t\t\t\t <td>" + calculCredits(invoice, plays) + "</td> \n"
+    + "\t\t\t\t <td>" + volumeCredits + "</td> \n"
     + "\t\t\t</tr> \n");
 
     result.append("\t\t</table> \n"
